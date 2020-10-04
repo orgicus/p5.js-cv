@@ -1,0 +1,41 @@
+{
+  "env": {
+    "jasmine": true,
+    "node": true,
+    "mocha": true,
+    "browser": true,
+    "builtin": true,
+    "es6": true
+  },
+  "globals": {
+    "p5": true,
+    "define": true,
+    "Float32Array": true,
+    "Uint8Array": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "no-cond-assign": [2, "except-parens"],
+    "eqeqeq": ["error", "smart"],
+    "no-use-before-define": [
+      2,
+      {
+        "functions": false
+      }
+    ],
+    "new-cap": 0,
+    "no-caller": 2,
+    "no-undef": 0,
+    "no-unused-vars": ["error", { "args": "none" }],
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "no-console": "off"
+   
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+    }
+}

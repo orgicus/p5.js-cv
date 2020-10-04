@@ -1,0 +1,6 @@
+docs
+node_modules
+examples/__test
+p5soundnotes
+*.DS_Store
+.vscode
