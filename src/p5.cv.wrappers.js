@@ -101,13 +101,13 @@ p5.cv.thresholdTo = function (
   p5.cv.imitate(destinationMat, sourceMat);
   let thresholdType = invert ? cv.THRESH_BINARY_INV : cv.THRESH_BINARY;
   let maxVal = p5.cv.getMaxValForMat(destinationMat);
-  //cv.threshold(sourceMat, destinationMat, thresholdValue, maxVal, thresholdType);
+  // cv.threshold(sourceMat, destinationMat, thresholdValue, maxVal, thresholdType);
   cv.threshold(
     sourceMat,
     destinationMat,
     thresholdValue,
     maxVal,
-    cv.THRESH_BINARY
+    thresholdType
   );
 };
 // threshold in place
@@ -199,11 +199,11 @@ p5.cv.convertSingleColor = function (p5Color, code) {
 // do that quickly for RGBA, RGB, and 1-channel images.
 p5.cv.copyGray = function (sourceMat, destinationMat) {
   let channels = p5.cv.getChannelsForMat(sourceMat);
-  if (channels == 4) {
+  if (channels === 4) {
     p5.cv.convertColor(sourceMat, destinationMat, cv.COLOR_RGBA2GRAY);
-  } else if (channels == 3) {
+  } else if (channels === 3) {
     p5.cv.convertColor(sourceMat, destinationMat, cv.COLOR_RGB2GRAY);
-  } else if (channels == 1) {
+  } else if (channels === 1) {
     sourceMat.copyTo(destinationMat);
   }
 };
@@ -403,7 +403,7 @@ p5.cv.resizeTo = function (
   destinationMat,
   interpolation = cv.INTER_LINEAR
 ) {
-  // TODO: validation args (especially destination Mat (e.g. width != 0, height != 0))
+  // TODO: validation args (especially destination Mat (e.g. width !=== 0, height !=== 0))
   cv.resize(
     sourceMat,
     destinationMat,
@@ -425,8 +425,8 @@ p5.cv.resizeToScale = function (
   let dstWidth = Math.floor(p5.cv.getWidth(sourceMat) * xScale),
     dstHeight = Math.floor(p5.cv.getHeight(sourceMat) * yScale);
   if (
-    p5.cv.getWidth(destinationMat) != dstWidth ||
-    p5.cv.getHeight(destinationMat) != dstHeight
+    p5.cv.getWidth(destinationMat) !== dstWidth ||
+    p5.cv.getHeight(destinationMat) !== dstHeight
   ) {
     p5.cv.allocate(
       destinationMat,
@@ -451,8 +451,8 @@ p5.cv.resizeToDimensions = function (
   interpolation = cv.INTER_LINEAR
 ) {
   if (
-    p5.cv.getWidth(destinationMat) != dstWidth ||
-    p5.cv.getHeight(destinationMat) != dstHeight
+    p5.cv.getWidth(destinationMat) !== dstWidth ||
+    p5.cv.getHeight(destinationMat) !== dstHeight
   ) {
     p5.cv.allocate(
       destinationMat,
@@ -557,7 +557,7 @@ p5.cv.fitLineFromVectors = function (vectors, height) {
     0.01
   );
   // return p5.cv.cvLineToVectors(line);
-  // if(frameCount == 75){
+  // if(frameCount === 75){
   //   console.log(line);
   // }
 
@@ -632,16 +632,16 @@ p5.cv.rotate = function (
 // the output is allocated to contain all pixels of the input.
 // TODO: check if allocate calls are actually required!!!
 p5.cv.rotate90To = function (sourceMat, destinationMat, angle) {
-  if (angle == 0) {
+  if (angle === 0) {
     sourceMat.copyTo(destinationMat);
-  } else if (angle == 90) {
+  } else if (angle === 90) {
     // p5.cv.allocate(destinationMat, sourceMat.rows, sourceMat.cols, sourceMat.type());
     cv.transpose(sourceMat, destinationMat);
     cv.flip(sourceMat, destinationMat, p5.cv.FLIP_HORIZONTAL);
-  } else if (angle == 180) {
+  } else if (angle === 180) {
     p5.cv.imitate(destinationMat, sourceMat);
     cv.flip(sourceMat, destinationMat, p5.cv.FLIP_BOTH);
-  } else if (angle == 270) {
+  } else if (angle === 270) {
     // p5.cv.allocate(destinationMat, sourceMat.rows, sourceMat.cols, sourceMat.type());
     cv.transpose(sourceMat, destinationMat);
     // cv.flip(sourceMat, destinationMat, p5.cv.FLIP_VERTICAL);

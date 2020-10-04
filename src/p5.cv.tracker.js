@@ -316,6 +316,7 @@ class RectTracker extends Tracker {
     for (const [label, trackedRect] of this.smoothed.entries()) {
       if (!this.existsCurrent(label)) {
         this.smoothed.delete(label);
+        trackedRect; //eslint :/
       }
     }
 

@@ -26,7 +26,7 @@ class ObjectFinder {
     if (this.classifier.empty()) {
       return;
     }
-    if (newFrameMat.channels() == 1) {
+    if (newFrameMat.channels() === 1) {
       this.gray = newFrameMat;
     } else {
       p5.cv.copyGray(newFrameMat, this.gray);
@@ -120,7 +120,7 @@ class ObjectFinder {
   }
 
   setPreset(preset) {
-    if (preset == ObjectFinder.FAST) {
+    if (preset === ObjectFinder.FAST) {
       this.setRescale(0.25);
       this.setMinNeighbors(2);
       this.setMultiScaleFactor(1.2);
@@ -128,7 +128,7 @@ class ObjectFinder {
       this.setMaxSizeScale(0.75);
       this.setCannyPruning(true);
       this.setFindBiggestObject(false);
-    } else if (preset == ObjectFinder.ACCURATE) {
+    } else if (preset === ObjectFinder.ACCURATE) {
       this.setRescale(0.5);
       this.setMinNeighbors(6);
       this.setMultiScaleFactor(1.02);
@@ -136,7 +136,7 @@ class ObjectFinder {
       this.setMaxSizeScale(1);
       this.setCannyPruning(true);
       this.setFindBiggestObject(false);
-    } else if (preset == ObjectFinder.SENSITIVE) {
+    } else if (preset === ObjectFinder.SENSITIVE) {
       this.setRescale(0.5);
       this.setMinNeighbors(1);
       this.setMultiScaleFactor(1.02);

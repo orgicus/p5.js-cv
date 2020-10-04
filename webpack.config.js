@@ -60,26 +60,30 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      // new UglifyJsPlugin({
-      //   include: [/\.min\.js$/],
-      //   cache: true,
-      //   parallel: true,
-      //   uglifyOptions: {
-      //     compress: {
-      //       drop_console: true
-      //     },
-      //     ecma: 6,
-      //     mangle: true,
-      //     output: {
-      //       comments: false
-      //     }
-      //   },
-      //   sourceMap: true,
-      // })
-      new TerserPlugin({ sourceMap: true })
+      new UglifyJsPlugin({
+        include: [/\.min\.js$/],
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: {
+            drop_console: true
+          },
+          ecma: 6,
+          mangle: true,
+          output: {
+            comments: false
+          }
+        },
+        sourceMap: true,
+      })
+      // new TerserPlugin({ sourceMap: true })
     ]
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
+  },
+  // FFS webpack
+  node: {
+    fs: 'empty'
   }
 }

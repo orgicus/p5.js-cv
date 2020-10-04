@@ -47,7 +47,7 @@ class ContourFinder {
       // Scalar is equivalent to [0, 0, 0, 0]
       let offset = [thresholdValue, thresholdValue, thresholdValue, 0];
       let base = p5.cv.colorToCvScalar(targetColor);
-      if (this.trackingColorMode == p5.cv.TrackingColorMode.TRACK_COLOR_RGB) {
+      if (this.trackingColorMode === p5.cv.TrackingColorMode.TRACK_COLOR_RGB) {
         //inRange(img, base - offset, base + offset, thresh);
         cv.inRange(
           sourceMat,
@@ -59,11 +59,11 @@ class ContourFinder {
         // all the HSV modes are broken incorrect,
         // because opencv uses hue 0-180 not 0-255
         // which means that the math doesn't wrap.
-        if (this.trackingColorMode == p5.cv.TrackingColorMode.TRACK_COLOR_H) {
+        if (this.trackingColorMode === p5.cv.TrackingColorMode.TRACK_COLOR_H) {
           offset[1] = 255;
           offset[2] = 255;
         }
-        if (this.trackingColorMode == p5.cv.TrackingColorMode.TRACK_COLOR_HS) {
+        if (this.trackingColorMode === p5.cv.TrackingColorMode.TRACK_COLOR_HS) {
           offset[2] = 255;
         }
         cv.cvtColor(sourceMat, this.hsvBuffer, cv.COLOR_RGBA2HSV);
@@ -213,7 +213,7 @@ class ContourFinder {
 
   getCentroid(i) {
     let m = cv.moments(this.contours[i]);
-    if (m.m00 != 0) {
+    if (m.m00 !== 0) {
       return new cv.Point(m.m10 / m.m00, m.m01 / m.m00);
     } else {
       return new cvPoint(0, 0);
@@ -275,12 +275,12 @@ class ContourFinder {
     if (quad.total() > 4) {
       for (let i = 0; i < maxIterations; i++) {
         cv.approxPolyDP(convexHull, quad, curEpsilon, true);
-        if (quad.total() == targetPoints) {
+        if (quad.total() === targetPoints) {
           break;
         }
         if (quad.total() > targetPoints) {
           minEpsilon = curEpsilon;
-          if (maxEpsilon == infinity) {
+          if (maxEpsilon === infinity) {
             curEpsilon = curEpsilon * 2;
           } else {
             curEpsilon = (maxEpsilon + minEpsilon) / 2;

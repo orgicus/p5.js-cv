@@ -11,7 +11,7 @@ class Flow {
 
   //call with two contiguous images
   calcOpticalFlowTo(lastMat, currentMat) {
-    if (lastMat.channels() == 1 && currentMat.channels() == 1) {
+    if (lastMat.channels() === 1 && currentMat.channels() === 1) {
       this.calcFlow(lastMat, currentMat);
     } else {
       p5.cv.copyGray(lastMat, this.last);
@@ -28,8 +28,8 @@ class Flow {
     let lastSize = this.last.size();
     let currSize = this.curr.size();
     if (
-      lastSize.width == currSize.width &&
-      lastSize.height == currSize.height
+      lastSize.width === currSize.width &&
+      lastSize.height === currSize.height
     ) {
       this.calcFlow(this.last, this.curr);
       this.hasFlow = true;
@@ -443,8 +443,8 @@ class OFlow extends Flow {
     let lastSize = this.last.size();
     let currSize = this.curr.size();
     if (
-      lastSize.width == currSize.width &&
-      lastSize.height == currSize.height
+      lastSize.width === currSize.width &&
+      lastSize.height === currSize.height
     ) {
       // TODO: profile CPU improvements
       // cheap way to ignore duplicate frames
@@ -459,7 +459,7 @@ class OFlow extends Flow {
   // TODO: this could be simpler with OpenCV operations instead of individual byte access ?
   // assumes rgba images, but only uses one channel
   calcFlow(prevMat, nextMat) {
-    if (prevMat.type() != cv.CV_8UC4 || nextMat.type() != cv.CV_8UC4) {
+    if (prevMat.type() !== cv.CV_8UC4 || nextMat.type() !== cv.CV_8UC4) {
       console.warn('currently supporting only RGBA images');
       this.hasFlow = false;
       return;
@@ -555,7 +555,7 @@ class OFlow extends Flow {
     let scaleX = rectWidth / this.curr.cols;
     let scaleY = rectHeight / this.curr.rows;
 
-    if (this.flow && this.flow.u != 0 && this.flow.v != 0) {
+    if (this.flow && this.flow.u !== 0 && this.flow.v !== 0) {
       this.uMotionGraph.addSample(this.flow.u);
       this.vMotionGraph.addSample(this.flow.v);
 
@@ -582,7 +582,7 @@ class OFlow extends Flow {
     if (!this.hasFlow) {
       return;
     }
-    if (this.flow && this.flow.u != 0 && this.flow.v != 0) {
+    if (this.flow && this.flow.u !== 0 && this.flow.v !== 0) {
       // draw left-right motion
       this.uMotionGraph.draw(rectWidth, rectHeight / 2);
       line(
@@ -607,7 +607,7 @@ class OFlow extends Flow {
 
 p5.cv.samePixels = function (a1, a2, stride, n) {
   for (var i = 0; i < n; i += stride) {
-    if (a1[i] != a2[i]) {
+    if (a1[i] !== a2[i]) {
       return false;
     }
   }
@@ -621,7 +621,7 @@ p5.cv.same = function (matA, matB) {
   p5.cv.copyGray(matA, matAGray);
   p5.cv.copyGray(matB, matBGray);
   cv.absdiff(matAGray, matBGray, diff);
-  let same = cv.countNonZero(diff) == 0;
+  let same = cv.countNonZero(diff) === 0;
   diff.delete();
   matAGray.delete();
   matBGray.delete();

@@ -21,52 +21,52 @@ p5.cv.getDepthForImage = function () {
   return cv.CV_8UC4;
 };
 cv.CV_8UC = function (channels) {
-  if (channels == 1) return cv.CV_8UC1;
-  if (channels == 2) return cv.CV_8UC2;
-  if (channels == 3) return cv.CV_8UC3;
-  if (channels == 4) return cv.CV_8UC4;
+  if (channels === 1) return cv.CV_8UC1;
+  if (channels === 2) return cv.CV_8UC2;
+  if (channels === 3) return cv.CV_8UC3;
+  if (channels === 4) return cv.CV_8UC4;
   return cv.CV_8UC1;
 };
 cv.CV_8SC = function (channels) {
-  if (channels == 1) return cv.CV_8SC1;
-  if (channels == 2) return cv.CV_8SC2;
-  if (channels == 3) return cv.CV_8SC3;
-  if (channels == 4) return cv.CV_8SC4;
+  if (channels === 1) return cv.CV_8SC1;
+  if (channels === 2) return cv.CV_8SC2;
+  if (channels === 3) return cv.CV_8SC3;
+  if (channels === 4) return cv.CV_8SC4;
   return cv.CV_8SC1;
 };
 cv.CV_16UC = function (channels) {
-  if (channels == 1) return cv.CV_16UC1;
-  if (channels == 2) return cv.CV_16UC2;
-  if (channels == 3) return cv.CV_16UC3;
-  if (channels == 4) return cv.CV_16UC4;
+  if (channels === 1) return cv.CV_16UC1;
+  if (channels === 2) return cv.CV_16UC2;
+  if (channels === 3) return cv.CV_16UC3;
+  if (channels === 4) return cv.CV_16UC4;
   return cv.CV_16UC1;
 };
 cv.CV_16SC = function (channels) {
-  if (channels == 1) return cv.CV_16SC1;
-  if (channels == 2) return cv.CV_16SC2;
-  if (channels == 3) return cv.CV_16SC3;
-  if (channels == 4) return cv.CV_16SC4;
+  if (channels === 1) return cv.CV_16SC1;
+  if (channels === 2) return cv.CV_16SC2;
+  if (channels === 3) return cv.CV_16SC3;
+  if (channels === 4) return cv.CV_16SC4;
   return cv.CV_16SC1;
 };
 cv.CV_32SC = function (channels) {
-  if (channels == 1) return cv.CV_32SC1;
-  if (channels == 2) return cv.CV_32SC2;
-  if (channels == 3) return cv.CV_32SC3;
-  if (channels == 4) return cv.CV_32SC4;
+  if (channels === 1) return cv.CV_32SC1;
+  if (channels === 2) return cv.CV_32SC2;
+  if (channels === 3) return cv.CV_32SC3;
+  if (channels === 4) return cv.CV_32SC4;
   return cv.CV_32SC1;
 };
 cv.CV_32FC = function (channels) {
-  if (channels == 1) return cv.CV_32FC1;
-  if (channels == 2) return cv.CV_32FC2;
-  if (channels == 3) return cv.CV_32FC3;
-  if (channels == 4) return cv.CV_32FC4;
+  if (channels === 1) return cv.CV_32FC1;
+  if (channels === 2) return cv.CV_32FC2;
+  if (channels === 3) return cv.CV_32FC3;
+  if (channels === 4) return cv.CV_32FC4;
   return cv.CV_32FC1;
 };
 cv.CV_64FC = function (channels) {
-  if (channels == 1) return cv.CV_64FC1;
-  if (channels == 2) return cv.CV_64FC2;
-  if (channels == 3) return cv.CV_64FC3;
-  if (channels == 4) return cv.CV_64FC4;
+  if (channels === 1) return cv.CV_64FC1;
+  if (channels === 2) return cv.CV_64FC2;
+  if (channels === 3) return cv.CV_64FC3;
+  if (channels === 4) return cv.CV_64FC4;
   return cv.CV_64FC1;
 };
 
@@ -102,7 +102,7 @@ p5.cv.getChannelsForMat = function (sourceMat) {
   return sourceMat.channels();
 };
 p5.cv.copyTo = function (sourceMat, destinationMat) {
-  if (sourceMat.type() == destinationMat.type()) {
+  if (sourceMat.type() === destinationMat.type()) {
     sourceMat.copyTo(destinationMat);
   } else {
     let alpha = p5.cv.getMaxVal(destinationMat) / p5.cv.getMaxVal(sourceMat);
@@ -121,9 +121,9 @@ p5.cv.copy = function (sourceMat, destinationMat) {
 
 p5.cv.allocate = function (sourceMat, width, height, cvType) {
   if (
-    p5.cv.getWidth(sourceMat) != width ||
-    p5.cv.getHeight(sourceMat) != height ||
-    p5.cv.getCvImageType(sourceMat) != cvType
+    p5.cv.getWidth(sourceMat) !== width ||
+    p5.cv.getHeight(sourceMat) !== height ||
+    p5.cv.getCvImageType(sourceMat) !== cvType
   ) {
     sourceMat.create(height, width, cvType);
   }
@@ -167,7 +167,7 @@ p5.cv.getMaxValForMat = function (mat) {
 p5.cv.getColorConversionTypes = function () {
   let types = [];
   for (property in cv) {
-    if (property.indexOf('COLOR_') == 0) {
+    if (property.indexOf('COLOR_') === 0) {
       types.push(property);
     }
   }
@@ -284,12 +284,14 @@ p5.cv.cvRotatedRectToPoints = function (rect) {
   return cv.RotatedRect.points(rect);
 };
 p5.cv.cvRotatedRectToVectors = function (rect) {
-  return p5.cv.cvRotatedRectToPoints.map((pt) => createVector(pt.x, pt.y));
+  return p5.cv
+    .cvRotatedRectToPoints(rect)
+    .map((pt) => createVector(pt.x, pt.y));
 };
 // template <class T> inline ofPolyline toOf(const std::vector<cv::Point_<T> >& contour)
-p5.cv.cvContourToPoints = function (contour) {
-  // TODO
-};
+// p5.cv.cvContourToPoints = function (contour) {
+// TODO
+// };
 /* // toOf functions
   // TODO: add p5.cv.cvMatToImageData()
   template <class T>
@@ -313,8 +315,9 @@ p5.cv.cvRectVectorToArray = function (rectVector, array) {
     array.push(rectVector.get(i));
   }
 };
-
+/* eslint-disable */
 class Graph {
+  
   constructor(historyLength, minValue, maxValue) {
     this.minValue = minValue;
     this.maxValue = maxValue;
@@ -351,3 +354,4 @@ class Graph {
     pop();
   }
 }
+/* eslint-enable */
