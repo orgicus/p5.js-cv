@@ -1,5 +1,3 @@
-const { src } = require("webpack-auto-inject-version");
-
 p5.cv.ZERO_SCALAR = [0, 0, 0, 0];
 // Helpers.h
 // TODO: test ! test ! test !
@@ -358,6 +356,10 @@ p5.cv.imageToMat = function (sourceImage, cvMat) {
     .getImageData(0, 0, sourceWidth, sourceHeight).data;
   cvMat.data.set(data);
 };
+
+p5.cv.getCvVideoCapture = function(p5Capture){
+    return new cv.VideoCapture(p5Capture.elt);
+}
 
 p5.cv.getRGBAMat = function (width, height) {
   return new cv.Mat(height, width, cv.CV_8UC4);

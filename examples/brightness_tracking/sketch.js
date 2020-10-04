@@ -16,26 +16,26 @@ let myMatGrayscale;
 
 function setup() {
   createCanvas(320, 240);
+  // setup p5 capture
   myCapture = createCapture(VIDEO);
   myCapture.size(320, 240);
   myCapture.hide();
-
-  myGraphics = createGraphics(320, 240);
-
+  // wait for OpenCV to init
   p5.cv.onComplete = onOpenCVComplete;
 }
 
 function onOpenCVComplete() {
-  myCVCapture = new cv.VideoCapture(myCapture.elt);
+  // create a CV capture helper
+  myCVCapture = p5.cv.getCvVideoCapture(myCapture);
+  // create a CV Mat to read new color frames into
   myMat = p5.cv.getRGBAMat(320, 240);
+  // create a CV mat for color to grayscale conversion
   myMatGrayscale = new cv.Mat();
 }
 
 function draw() {
   if (p5.cv.isReady) {
-    // render video element to canvas
-    //myGraphics.image(myCapture, 0, 0);
-    // convert Canvas to OpenCV Mat
+    // read from CV Capture into myMat
     myCVCapture.read(myMat);
     // convert Mat to grayscale
     p5.cv.copyGray(myMat, myMatGrayscale);
