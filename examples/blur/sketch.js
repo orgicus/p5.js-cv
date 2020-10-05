@@ -1,8 +1,5 @@
 /**
- * Based on the Processing Video Brightness Tracking example
- * by Golan Levin.
- *
- * Tracks the brightest pixel in a live video signal. 
+ * OpenCV 4 in p5.js: Blur example
  */
 
 // p5.js Video capture
