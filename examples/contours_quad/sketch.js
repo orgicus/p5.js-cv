@@ -21,6 +21,7 @@ let unwarpedMat;
 
 function setup() {
   createCanvas(320, 240);
+  noFill();
   // setup p5 capture
   myCapture = createCapture(VIDEO);
   myCapture.size(320, 240);
@@ -62,18 +63,41 @@ function draw() {
 		for(let i = 0; i < n; i++) {
 			quads[i] = myContourFinder.getFitQuad(i);
 			
-		// 	// convert integer image coordinates Point2i to unwarp positions Point2f
-		// 	// vector<Point2f> warpPoints;
-		// 	// copy(quads[i].begin(), quads[i].end(), back_inserter(warpPoints));
-			unwarpPerspective(myMat, unwarpedMat, quads[i]);
-		// 	// unwarped.update();
+			p5.cv.unwarpPerspective(myMat, unwarpedMat, quads[i]);
 		}
 
     // display Mat
     p5.cv.drawMat(myMat, 0, 0);
-    p5.cv.drawMat(unwarpedMat, 0, 0);
+    // draw contours
+    stroke(0);
+    myContourFinder.draw();
+    // draw quads
+    stroke('#ec008c');
+    noFill();
+    for (let i = 0; i < n; i++) {
+      // p5.cv.drawVectors(p5.cv.cvContourToPoints(quads[i]));
+      p5.cv.drawContour(quads[i]);
+    }
+
+    noStroke();
+    fill(127);
+    text(frameRate() + " fps\n" + 
+         int(threshold) + " threshold", 10, 20);
+	
+    translate(8, 75);
+    fill(0);
+    rect(-3, -3, 64 + 6, 64 + 6);
+    fill(targetColor);
+    rect(0, 0, 64, 64);
+
+    p5.cv.drawMat(unwarpedMat, 0, 70);
     
   } else {
     image(myCapture, 0, 0);
   }
+}
+
+function mousePressed() {
+	targetColor = myCapture.get(mouseX, mouseY);
+	myContourFinder.setTargetColor(targetColor, p5.cv.TrackingColorMode.TRACK_COLOR_HSV);
 }

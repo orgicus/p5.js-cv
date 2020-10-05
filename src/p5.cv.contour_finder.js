@@ -45,8 +45,13 @@ class ContourFinder {
     // threshold the image using a tracked color or just binary grayscale
     if (this.useTargetColor) {
       // Scalar is equivalent to [0, 0, 0, 0]
-      let offset = [this.thresholdValue, this.thresholdValue, this.thresholdValue, 0];
-      let base = p5.cv.colorToCvScalar(targetColor);
+      let offset = [
+        this.thresholdValue,
+        this.thresholdValue,
+        this.thresholdValue,
+        0,
+      ];
+      let base = p5.cv.colorToCvScalar(this.targetColor);
       if (this.trackingColorMode === p5.cv.TrackingColorMode.TRACK_COLOR_RGB) {
         //inRange(img, base - offset, base + offset, thresh);
         // cv.inRange(
@@ -55,9 +60,24 @@ class ContourFinder {
         //   cv.Scalar.add(base + offset),
         //   this.thresh
         // );
-        let lowerb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.sub(base, offset));
-        let upperb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.add(base, offset));
-        cv.inRange(sourceMat, cv.Scalar.sub(base, offset), cv.Scalar.add(base + offset), this.thresh);
+        let lowerb = new cv.Mat(
+          this.sourceMat.rows,
+          this.sourceMat.cols,
+          this.sourceMat.type(),
+          cv.Scalar.sub(base, offset)
+        );
+        let upperb = new cv.Mat(
+          this.sourceMat.rows,
+          this.sourceMat.cols,
+          this.sourceMat.type(),
+          cv.Scalar.add(base, offset)
+        );
+        cv.inRange(
+          sourceMat,
+          cv.Scalar.sub(base, offset),
+          cv.Scalar.add(base + offset),
+          this.thresh
+        );
         lowerb.delete();
         upperb.delete();
       } else {
@@ -71,16 +91,26 @@ class ContourFinder {
         if (this.trackingColorMode === p5.cv.TrackingColorMode.TRACK_COLOR_HS) {
           offset[2] = 255;
         }
-        if(!p5.cv.getAllocated(this.hsvBuffer)){
-          p5.cv.imitate(this.hsvBuffer,sourceMat);
+        if (!p5.cv.getAllocated(this.hsvBuffer)) {
+          p5.cv.imitate(this.hsvBuffer, sourceMat);
         }
         cv.cvtColor(sourceMat, this.hsvBuffer, cv.COLOR_RGBA2RGB);
         cv.cvtColor(this.hsvBuffer, this.hsvBuffer, cv.COLOR_RGB2HSV);
-        base = p5.cv.convertSingleColor(targetColor, cv.COLOR_RGBA2RGB);
+        base = p5.cv.convertSingleColor(this.targetColor, cv.COLOR_RGBA2RGB);
         base = p5.cv.convertSingleColor(base, cv.COLOR_RGB2HSV);
 
-        let lowerb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.sub(base, offset));
-        let upperb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.add(base, offset));
+        let lowerb = new cv.Mat(
+          this.hsvBuffer.rows,
+          this.hsvBuffer.cols,
+          this.hsvBuffer.type(),
+          cv.Scalar.sub(base, offset)
+        );
+        let upperb = new cv.Mat(
+          this.hsvBuffer.rows,
+          this.hsvBuffer.cols,
+          this.hsvBuffer.type(),
+          cv.Scalar.add(base, offset)
+        );
         cv.inRange(this.hsvBuffer, lowerb, upperb, this.thresh);
         lowerb.delete();
         upperb.delete();

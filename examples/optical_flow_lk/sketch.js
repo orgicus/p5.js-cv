@@ -17,7 +17,7 @@ let myMatGrayscale;
 let myFlowLK;
 
 function setup() {
-  createCanvas(320, 240);
+  createCanvas(640, 480);
   stroke(0, 192, 0);
   strokeWeight(3);
   // setup p5 capture

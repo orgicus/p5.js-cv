@@ -194,7 +194,6 @@ p5.cv.convertSingleColor = function (p5Color, code) {
   mat.data[1] = levels[1];
   mat.data[2] = levels[2];
 
-
   cv.cvtColor(mat, mat, code);
   let data = Array.from(mat.data);
   // add alpha back in
@@ -332,8 +331,8 @@ p5.cv.warpPerspective = function (
   destinationPoints,
   flags = cv.INTER_LINEAR
 ) {
-  if(destinationPoints.type() !== cv.CV_32FC2){
-    destinationPoints.convertTo(sourcePoints, cv.CV_32FC2);
+  if (destinationPoints.type() !== cv.CV_32FC2) {
+    destinationPoints.convertTo(destinationPoints, cv.CV_32FC2);
   }
   // TODO validate args !!!
   let w = sourceMat.cols;
@@ -368,11 +367,11 @@ p5.cv.unwarpPerspective = function (
   sourcePoints,
   flags = cv.INTER_LINEAR
 ) {
-  if(sourcePoints.type() !== cv.CV_32FC2){
+  if (sourcePoints.type() !== cv.CV_32FC2) {
     sourcePoints.convertTo(sourcePoints, cv.CV_32FC2);
   }
-  let w = dstMat.cols;
-  let h = dstMat.rows;
+  let w = destinationMat.cols;
+  let h = destinationMat.rows;
   let destinationPoints = cv.matFromArray(4, 1, cv.CV_32FC2, [
     0,
     0,
@@ -490,6 +489,17 @@ p5.cv.cvPointsToJS = function (mat) {
   return result;
 };
 
+p5.cv.drawContour = function (mat, close = true) {
+  beginShape();
+  for (let i = 0; i < mat.rows; i++) {
+    vertex(mat.data32S[i * 2], mat.data32S[i * 2 + 1]);
+  }
+  if (close) {
+    vertex(mat.data32S[0], mat.data32S[1]);
+  }
+  endShape();
+};
+
 p5.cv.cvPointsToVectors = function (mat) {
   let result = [];
   for (let i = 0; i < mat.rows; i++) {
@@ -530,7 +540,7 @@ p5.cv.getConvexHullMat = function (contourMat) {
   let hull = new cv.Mat();
   cv.convexHull(contourMat, hull);
   return hull;
-}
+};
 
 p5.cv.convexHullFromMat = function (contourMat) {
   return p5.cv.cvPointsToJS(p5.cv.getConvexHullMat(contourMat));
