@@ -1,0 +1,53 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brightness Tracking Example</title>
+  <meta name="description" content="OpenCV.js p5.js wrapper Brightness Tracking demo">
+  <meta name="author" content="George Profenza">
+
+</head>
+
+<body>
+  <script language="javascript" type="text/javascript" src="../../lib/p5.js"></script>
+  
+  <script language="javascript" type="text/javascript" src="../../lib/opencv.js"></script>
+  
+  <script language="javascript" type="text/javascript" src="../../lib/p5.cv.js"></script> 
+  
+  <script language="javascript" type="text/javascript" src="sketch.js"></script> 
+  
+  <script language="javascript" type="text/javascript">
+    function updateLabel(prefix, input, isFloat){
+      console.log(prefix, isFloat);
+      document.querySelector("#" + input.id + "Label").innerText = prefix + " " + (isFloat ? nfc(input.value, 4) : int(input.value));
+      updateFlowSettings();
+    }
+  </script> 
+
+  <p>Sparse optical flow (Lucas-Kanade method) </p>
+  <p>based on ofxCv example-flow by Kyle McDonald</p>
+  
+  <label id="lkMaxLevelLabel">Max Level</label><br />
+  <input type="range" id="lkMaxLevel" value="3" min="0" max="8" oninput="updateLabel('Max Features:', this, false);"><br />
+  
+  <label id="lkMaxFeaturesLabel">Max Features: </label><br />
+  <input type="range" id="lkMaxFeatures" value="200" min="1" max="1000" oninput="updateLabel('Max Features:', this, false);"><br />
+  
+  <label id="lkQualityLevelLabel">Quality Level: </label><br />
+  <input type="range" id="lkQualityLevel" value="0.01" min="0.001" max="0.02" step="0.001" oninput="updateLabel('Quality Level:', this, true);"><br />
+  
+  <label id="lkMinDistanceLabel">Min Distance: </label><br />
+  <input type="range" id="lkMinDistance" value="4" min="1" max="16" oninput="updateLabel('Min Distance:', this, false);"><br />
+  
+  <label id="lkWinSizeLabel">Window Size: </label><br />
+  <input type="range" id="lkWinSize" value="8" min="4" max="64" oninput="updateLabel('Window Size:', this, false);"><br />
+  <!-- gui.add(lkMaxLevel.set("lkMaxLevel", 3, 0, 8));
+    gui.add(lkMaxFeatures.set("lkMaxFeatures", 200, 1, 1000));
+    gui.add(lkQualityLevel.set("lkQualityLevel", 0.01, 0.001, .02));
+    gui.add(lkMinDistance.set("lkMinDistance", 4, 1, 16));
+    gui.add(lkWinSize.set("lkWinSize", 8, 4, 64)); -->
+</body>
+</html>

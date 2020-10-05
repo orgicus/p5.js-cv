@@ -357,9 +357,9 @@ p5.cv.imageToMat = function (sourceImage, cvMat) {
   cvMat.data.set(data);
 };
 
-p5.cv.getCvVideoCapture = function(p5Capture){
-    return new cv.VideoCapture(p5Capture.elt);
-}
+p5.cv.getCvVideoCapture = function (p5Capture) {
+  return new cv.VideoCapture(p5Capture.elt);
+};
 
 p5.cv.getRGBAMat = function (width, height) {
   return new cv.Mat(height, width, cv.CV_8UC4);

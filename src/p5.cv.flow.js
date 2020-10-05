@@ -428,6 +428,69 @@ class FlowFarneback extends Flow {
   }
 }
 
+class Graph {
+  constructor(historyLength, minValue, maxValue) {
+    this.minValue = minValue;
+    this.maxValue = maxValue;
+    this.historyLength = historyLength;
+    this.history = new Float32Array(historyLength);
+    this.index = 0;
+  }
+
+  addSample(sample) {
+    this.history[this.index] = sample;
+    this.index = (this.index + 1) % this.historyLength;
+  }
+
+  getNormalizedSample(offset) {
+    var i = (this.index + offset) % this.historyLength;
+    var range = this.maxValue - this.minValue;
+    return (this.history[i] - this.minValue) / range;
+  }
+
+  draw(width, height) {
+    push();
+    noFill();
+    strokeWeight(1);
+    beginShape();
+    var range = this.maxValue - this.minValue;
+    for (var offset = 0; offset < this.historyLength; offset++) {
+      var i = (this.index + offset) % this.historyLength;
+      var x = (offset * width) / this.historyLength;
+      var normalized = (this.history[i] - this.minValue) / range;
+      var y = height - normalized * height;
+      vertex(x, y);
+    }
+    endShape();
+    pop();
+  }
+}
+
+p5.cv.samePixels = function (a1, a2, stride, n) {
+  for (var i = 0; i < n; i += stride) {
+    if (a1[i] !== a2[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+// TODO: review all functions that make new matrices and cleanup
+p5.cv.same = function (matA, matB) {
+  let diff = new cv.Mat();
+  let matAGray = new cv.Mat();
+  let matBGray = new cv.Mat();
+  p5.cv.copyGray(matA, matAGray);
+  p5.cv.copyGray(matB, matBGray);
+  cv.absdiff(matAGray, matBGray, diff);
+  let same = cv.countNonZero(diff) === 0;
+  diff.delete();
+  matAGray.delete();
+  matBGray.delete();
+  return same;
+};
+
+// copied from https://github.com/anvaka/oflow
+
 class OFlow extends Flow {
   constructor() {
     super();
@@ -605,27 +668,4 @@ class OFlow extends Flow {
   }
 }
 
-p5.cv.samePixels = function (a1, a2, stride, n) {
-  for (var i = 0; i < n; i += stride) {
-    if (a1[i] !== a2[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-// TODO: review all functions that make new matrices and cleanup
-p5.cv.same = function (matA, matB) {
-  let diff = new cv.Mat();
-  let matAGray = new cv.Mat();
-  let matBGray = new cv.Mat();
-  p5.cv.copyGray(matA, matAGray);
-  p5.cv.copyGray(matB, matBGray);
-  cv.absdiff(matAGray, matBGray, diff);
-  let same = cv.countNonZero(diff) === 0;
-  diff.delete();
-  matAGray.delete();
-  matBGray.delete();
-  return same;
-};
-
-export { Flow, FlowPyrLK, FlowFarneback, OFlow };
+export { Flow, FlowPyrLK, FlowFarneback, OFlow, Graph };
