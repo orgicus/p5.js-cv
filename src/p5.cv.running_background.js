@@ -56,9 +56,9 @@ class RunningBackground {
       );
     }
     if (this.ignoreForeground) {
-      //   TODO: finish this
-      // p5.cv.accumulateWeighted(this.frame, this.accumulator, curLearningRate, this.thresholded);
-      cv.bitwise_not(this.thresholded, this.thresholded);
+      //   TODO: finish this: add mask
+      p5.cv.accumulateWeighted(frame, this.accumulator, curLearningRate);
+      // cv.bitwise_not(this.thresholded, this.thresholded);
     } else {
       p5.cv.accumulateWeighted(frame, this.accumulator, curLearningRate);
     }

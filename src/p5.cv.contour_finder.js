@@ -34,7 +34,7 @@ class ContourFinder {
     this.boundingRects = [];
     this.holes = [];
 
-    this.contourFindingMode = cv.CV_RETR_EXTERNAL;
+    this.contourFindingMode = cv.RETR_EXTERNAL;
     this.sortBySize = false;
 
     this.resetMinArea();
@@ -45,16 +45,21 @@ class ContourFinder {
     // threshold the image using a tracked color or just binary grayscale
     if (this.useTargetColor) {
       // Scalar is equivalent to [0, 0, 0, 0]
-      let offset = [thresholdValue, thresholdValue, thresholdValue, 0];
+      let offset = [this.thresholdValue, this.thresholdValue, this.thresholdValue, 0];
       let base = p5.cv.colorToCvScalar(targetColor);
       if (this.trackingColorMode === p5.cv.TrackingColorMode.TRACK_COLOR_RGB) {
         //inRange(img, base - offset, base + offset, thresh);
-        cv.inRange(
-          sourceMat,
-          cv.Scalar.sub(base, offset),
-          cv.Scalar.add(base + offset),
-          this.thresh
-        );
+        // cv.inRange(
+        //   sourceMat,
+        //   cv.Scalar.sub(base, offset),
+        //   cv.Scalar.add(base + offset),
+        //   this.thresh
+        // );
+        let lowerb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.sub(base, offset));
+        let upperb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.add(base, offset));
+        cv.inRange(sourceMat, cv.Scalar.sub(base, offset), cv.Scalar.add(base + offset), this.thresh);
+        lowerb.delete();
+        upperb.delete();
       } else {
         // all the HSV modes are broken incorrect,
         // because opencv uses hue 0-180 not 0-255
@@ -66,11 +71,19 @@ class ContourFinder {
         if (this.trackingColorMode === p5.cv.TrackingColorMode.TRACK_COLOR_HS) {
           offset[2] = 255;
         }
-        cv.cvtColor(sourceMat, this.hsvBuffer, cv.COLOR_RGBA2HSV);
-        base = p5.cv.convertSingleColor(targetColor, cv.COLOR_RGBA2HSV);
-        let lowerb = cv.Scalar.sub(base, offset);
-        let upperb = cv.Scalar.add(base, offset);
+        if(!p5.cv.getAllocated(this.hsvBuffer)){
+          p5.cv.imitate(this.hsvBuffer,sourceMat);
+        }
+        cv.cvtColor(sourceMat, this.hsvBuffer, cv.COLOR_RGBA2RGB);
+        cv.cvtColor(this.hsvBuffer, this.hsvBuffer, cv.COLOR_RGB2HSV);
+        base = p5.cv.convertSingleColor(targetColor, cv.COLOR_RGBA2RGB);
+        base = p5.cv.convertSingleColor(base, cv.COLOR_RGB2HSV);
+
+        let lowerb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.sub(base, offset));
+        let upperb = new cv.Mat(this.sourceMat.rows, this.sourceMat.cols, this.sourceMat.type(), cv.Scalar.add(base, offset));
         cv.inRange(this.hsvBuffer, lowerb, upperb, this.thresh);
+        lowerb.delete();
+        upperb.delete();
       }
     } else {
       p5.cv.copyGray(sourceMat, this.thresh);
@@ -84,7 +97,7 @@ class ContourFinder {
     let allContours = new cv.MatVector();
     let hierarchy = new cv.Mat();
     let simplifyMode = this.simplify
-      ? cv.HAIN_APPROX_SIMPLE
+      ? cv.CHAIN_APPROX_SIMPLE
       : cv.CHAIN_APPROX_NONE;
     cv.findContours(
       this.thresh,
@@ -120,7 +133,7 @@ class ContourFinder {
           (!needMinFilter || curArea >= imgMinArea) &&
           (!needMaxFilter || curArea <= imgMaxArea)
         ) {
-          allIndices.push_back(i);
+          allIndices.push(i);
         }
       }
     } else {
@@ -238,7 +251,9 @@ class ContourFinder {
   }
 
   getConvexHull(i) {
-    return p5.cv.convexHullFromMat(this.contours[i]);
+    if (this.contours[i]) {
+      return p5.cv.getConvexHullMat(this.contours[i]);
+    }
   }
 
   getConvexityDefects(i) {
@@ -262,6 +277,9 @@ class ContourFinder {
 
   getFitQuad(i) {
     let convexHull = this.getConvexHull(i);
+    if (!convexHull) {
+      return;
+    }
     let quad = convexHull.clone();
 
     const targetPoints = 4;

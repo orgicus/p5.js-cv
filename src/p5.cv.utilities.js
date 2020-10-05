@@ -289,9 +289,9 @@ p5.cv.cvRotatedRectToVectors = function (rect) {
     .map((pt) => createVector(pt.x, pt.y));
 };
 // template <class T> inline ofPolyline toOf(const std::vector<cv::Point_<T> >& contour)
-// p5.cv.cvContourToPoints = function (contour) {
-// TODO
-// };
+p5.cv.cvContourToPoints = function (contour) {
+  return p5.cv.cvPointsToJS(contour);
+};
 /* // toOf functions
   // TODO: add p5.cv.cvMatToImageData()
   template <class T>

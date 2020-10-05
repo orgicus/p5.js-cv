@@ -66,12 +66,8 @@ p5.cv.accumulateWeighted = function (
   alpha,
   mask = null
 ) {
-  // p5.cv.accumulate(newMat, accumulatorMat);
   // imageA = alpha*imageA + (1-alpha)*imageB;
   p5.cv.lerp(accumulatorMat, newMat, accumulatorMat, alpha);
-  // cv.addWeighted(sourceMat, alpha, destinationMat, 1.0 - alpha, 0.0, destinationMat);
-  // acc(x,y) = (1 − α) ⋅ acc(x, y) + α ⋅ image(x, y)
-  // cv.addWeighted(accumulatorMat, alpha, newMat, 1.0 - alpha, 0.0, accumulatorMat);
 };
 // normalize the min/max to [0, max for this type] out of place
 p5.cv.normalizeTo = function (sourceMat, destinationMat) {
@@ -183,15 +179,26 @@ p5.cv.convertColor = function (sourceMat, destinationMat, code) {
 // !!!!note it converts RGB, not RGB
 p5.cv.convertSingleColor = function (p5Color, code) {
   let mat = cv.Mat.zeros(1, 1, cv.CV_8UC3);
+  // TODO: check if array.length < 4, if fill in the blanks
+  let levels;
+  if (p5Color instanceof p5.Color) {
+    levels = p5Color.levels;
+  } else if (p5Color instanceof Array) {
+    levels = p5Color;
+  } else {
+    console.warn('unsupported format');
+    return mat.data;
+  }
 
-  mat.data[0] = p5Color._getRed();
-  mat.data[1] = p5Color._getGreen();
-  mat.data[2] = p5Color._getBlue();
+  mat.data[0] = levels[0];
+  mat.data[1] = levels[1];
+  mat.data[2] = levels[2];
+
 
   cv.cvtColor(mat, mat, code);
   let data = Array.from(mat.data);
   // add alpha back in
-  data.push(p5Color._getAlpha());
+  data.push(levels[4]);
   return data;
 };
 
@@ -325,6 +332,9 @@ p5.cv.warpPerspective = function (
   destinationPoints,
   flags = cv.INTER_LINEAR
 ) {
+  if(destinationPoints.type() !== cv.CV_32FC2){
+    destinationPoints.convertTo(sourcePoints, cv.CV_32FC2);
+  }
   // TODO validate args !!!
   let w = sourceMat.cols;
   let h = sourceMat.rows;
@@ -358,6 +368,9 @@ p5.cv.unwarpPerspective = function (
   sourcePoints,
   flags = cv.INTER_LINEAR
 ) {
+  if(sourcePoints.type() !== cv.CV_32FC2){
+    sourcePoints.convertTo(sourcePoints, cv.CV_32FC2);
+  }
   let w = dstMat.cols;
   let h = dstMat.rows;
   let destinationPoints = cv.matFromArray(4, 1, cv.CV_32FC2, [
@@ -513,10 +526,14 @@ p5.cv.cvLineToVectors = function (mat) {
   return result;
 };
 
-p5.cv.convexHullFromMat = function (contourMat) {
+p5.cv.getConvexHullMat = function (contourMat) {
   let hull = new cv.Mat();
   cv.convexHull(contourMat, hull);
-  return p5.cv.cvPointsToJS(hull);
+  return hull;
+}
+
+p5.cv.convexHullFromMat = function (contourMat) {
+  return p5.cv.cvPointsToJS(p5.cv.getConvexHullMat(contourMat));
 };
 
 p5.cv.convexHull = function (vectors) {
