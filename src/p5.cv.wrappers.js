@@ -214,7 +214,7 @@ p5.cv.copyGray = function (sourceMat, destinationMat) {
   }
 };
 
-p5.cv.copyRGB = function (sourceMat, destinationMat){
+p5.cv.copyRGB = function (sourceMat, destinationMat) {
   let channels = p5.cv.getChannelsForMat(sourceMat);
   if (channels === 4) {
     p5.cv.convertColor(sourceMat, destinationMat, cv.COLOR_RGBA2RGB);
@@ -223,7 +223,7 @@ p5.cv.copyRGB = function (sourceMat, destinationMat){
   } else if (channels === 1) {
     p5.cv.convertColor(sourceMat, destinationMat, cv.COLOR_GRAY2RGB);
   }
-}
+};
 
 p5.cv.forceOdd = function (x) {
   return Math.floor(x / 2) * 2 + 1;

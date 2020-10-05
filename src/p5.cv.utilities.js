@@ -271,7 +271,14 @@ p5.cv.vectorsToCvContour = function (points) {
   );
 };
 p5.cv.colorToCvScalar = function (color) {
-  return color.levels;
+  if (color instanceof p5.Color) {
+    return color.levels;
+  } else if (color instanceof Array) {
+    return color;
+  } else {
+    console.warn('unexpected color format', color);
+    return color;
+  }
 };
 // TODO: cv::Mat toCv(ofMesh& mesh);
 // cv::Point2f toCv(ofVec2f vec); -> not required as any object with x,y properties will do the job as an input

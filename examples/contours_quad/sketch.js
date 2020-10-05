@@ -20,7 +20,7 @@ let targetColor;
 let unwarpedMat;
 
 function setup() {
-  createCanvas(320, 240);
+  createCanvas(320, 240).mousePressed(onCanvasPressed);
   noFill();
   // setup p5 capture
   myCapture = createCapture(VIDEO);
@@ -59,10 +59,11 @@ function draw() {
     let n = myContourFinder.size();
     // clear previos quads
     quads.length = 0;
-    // for each quad
+    // for each contour
 		for(let i = 0; i < n; i++) {
+      // fit a quad
 			quads[i] = myContourFinder.getFitQuad(i);
-			
+			// warp each quad
 			p5.cv.unwarpPerspective(myMat, unwarpedMat, quads[i]);
 		}
 
@@ -75,7 +76,6 @@ function draw() {
     stroke('#ec008c');
     noFill();
     for (let i = 0; i < n; i++) {
-      // p5.cv.drawVectors(p5.cv.cvContourToPoints(quads[i]));
       p5.cv.drawContour(quads[i]);
     }
 
@@ -89,7 +89,7 @@ function draw() {
     rect(-3, -3, 64 + 6, 64 + 6);
     fill(targetColor);
     rect(0, 0, 64, 64);
-
+    // draw unwarped Mat
     p5.cv.drawMat(unwarpedMat, 0, 70);
     
   } else {
@@ -97,7 +97,7 @@ function draw() {
   }
 }
 
-function mousePressed() {
+function onCanvasPressed() {
 	targetColor = myCapture.get(mouseX, mouseY);
 	myContourFinder.setTargetColor(targetColor, p5.cv.TrackingColorMode.TRACK_COLOR_HSV);
 }

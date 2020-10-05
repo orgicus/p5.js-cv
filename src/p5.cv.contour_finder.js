@@ -61,23 +61,18 @@ class ContourFinder {
         //   this.thresh
         // );
         let lowerb = new cv.Mat(
-          this.sourceMat.rows,
-          this.sourceMat.cols,
-          this.sourceMat.type(),
+          sourceMat.rows,
+          sourceMat.cols,
+          sourceMat.type(),
           cv.Scalar.sub(base, offset)
         );
         let upperb = new cv.Mat(
-          this.sourceMat.rows,
-          this.sourceMat.cols,
-          this.sourceMat.type(),
+          sourceMat.rows,
+          sourceMat.cols,
+          sourceMat.type(),
           cv.Scalar.add(base, offset)
         );
-        cv.inRange(
-          sourceMat,
-          cv.Scalar.sub(base, offset),
-          cv.Scalar.add(base + offset),
-          this.thresh
-        );
+        cv.inRange(sourceMat, lowerb, upperb, this.thresh);
         lowerb.delete();
         upperb.delete();
       } else {
