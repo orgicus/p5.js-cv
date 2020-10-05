@@ -103,6 +103,10 @@ p5.cv.meanRows = function (sourceMat) {
   return colMat;
 };
 
+p5.cv.sumData = function (data) {
+  return data.reduce((a, b) => a + b);
+};
+
 p5.cv.sumCols = function (sourceMat) {
   let colMat = new cv.Mat(sourceMat.cols, 1, CV_32FC1);
   for (let i = 0; i < sourceMat.cols; i++) {
@@ -115,7 +119,7 @@ p5.cv.sumCols = function (sourceMat) {
 p5.cv.sumRows = function (sourceMat) {
   let rowMat = new cv.Mat(sourceMat.rows, 1, CV_32FC1);
   for (let i = 0; i < sourceMat.rows; i++) {
-    // FIXME: cv.sum does not exist -> will col(i).data always work ?
+    // FIXME: cv.sum does not exist -> will data(i).data always work ?
     rowMat.row(i).data32F[0] = sourceMat.row(i).data.reduce((a, b) => a + b);
   }
   return rowMat;
@@ -362,11 +366,15 @@ p5.cv.getCvVideoCapture = function (p5Capture) {
 };
 
 p5.cv.getRGBAMat = function (width, height) {
-  return new cv.Mat(height, width, cv.CV_8UC4);
+  return cv.Mat.zeros(height, width, cv.CV_8UC4);
+};
+
+p5.cv.getRGBMat = function (width, height) {
+  return cv.Mat.zeros(height, width, cv.CV_8UC3);
 };
 
 p5.cv.getGrayscaleMat = function (width, height) {
-  return new cv.Mat(height, width, cv.CV_8UC1);
+  return cv.Mat.zeros(height, width, cv.CV_8UC1);
 };
 
 p5.cv.matToImage = function (sourceMat, destinationImage) {

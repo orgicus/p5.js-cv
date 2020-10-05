@@ -1,0 +1,31 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brightness Tracking Example</title>
+  <meta name="description" content="OpenCV.js p5.js wrapper Bayer example">
+  <meta name="author" content="George Profenza">
+
+</head>
+
+<body>
+  <script language="javascript" type="text/javascript" src="../../lib/p5.js"></script>
+  
+  <script language="javascript" type="text/javascript" src="../../lib/opencv.js"></script>
+  
+  <script language="javascript" type="text/javascript" src="../../lib/p5.cv.js"></script> 
+  
+  <script language="javascript" type="text/javascript" src="sketch.js"></script> 
+  
+  <p>Switch between different <a href="https://en.wikipedia.org/wiki/Bayer_filter" target="_blank">Bayer pattern types</a> </p>
+  <p>Based on ofxCv's bayer example by Kyle McDonald</p>
+  <select name="bayerTypeDropDown" id="bayerType" oninput="update();">
+    <option value="COLOR_BayerBG2RGB">COLOR_BayerBG2RGB</option>
+    <option value="COLOR_BayerGB2RGB">COLOR_BayerGB2RGB</option>
+    <option value="COLOR_BayerRG2RGB">COLOR_BayerRG2RGB</option>
+    <option value="COLOR_BayerGR2RGB">COLOR_BayerGR2RGB</option>
+  </select><br />
+</body>
+</html>
