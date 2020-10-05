@@ -25,13 +25,13 @@ function setup() {
   strokeWeight(3);
   // setup p5 video
   myVideo = createVideo(['../assets/fingers.mov'], myVideoLoaded);
+  // wait for OpenCV to init
+  p5.cv.onComplete = setupCV;
 }
 
 function myVideoLoaded() {
   myVideo.loop();
   myVideo.volume(0);
-  setupCV();
-
   isVideoLoaded = true;
 }
 
@@ -55,15 +55,20 @@ function updateRunningBackgroundSettings(){
   myBackground.setThresholdValue(select('#thresholdValue').value());
 }
 
+function hasSameSize(capture, mat){
+  return capture.video.width === mat.cols && capture.video.height === mat.rows;
+}
+
 function draw() {
-  if (isVideoLoaded) {
+  if (p5.cv.isReady && hasSameSize(myCVCapture, myMat)) {
     // read from CV Capture into myMat
     myCVCapture.read(myMat);
     // convert Mat to grayscale
     p5.cv.copyGray(myMat, myMatGrayscale);
-    // // update Running Background
+    // update Running Background
     myBackground.update(myMatGrayscale, myThresholdedMat);
-    // // display Mat
-    p5.cv.drawMat(myThresholdedMat, 0, 0);
+    // display Mat
+    p5.cv.drawMat(myMat, 0, 0);
+    console.log(myMatGrayscale);
   }
 }

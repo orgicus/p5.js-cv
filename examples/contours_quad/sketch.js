@@ -81,7 +81,7 @@ function draw() {
 
     noStroke();
     fill(127);
-    text(frameRate() + " fps\n" + 
+    text(frameRate().toFixed(2) + " fps\n" + 
          int(threshold) + " threshold", 10, 20);
 	
     translate(8, 75);
