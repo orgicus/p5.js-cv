@@ -23,27 +23,19 @@
     function updateLabel(prefix, input, isFloat){
       console.log(prefix, isFloat);
       document.querySelector("#" + input.id + "Label").innerText = prefix + " " + (isFloat ? nfc(input.value, 4) : int(input.value));
-      updateFlowSettings();
+      updateRunningBackgroundSettings();
     }
   </script> 
 
   <p>Sparse optical flow (Lucas-Kanade method) </p>
   <p>based on ofxCv example-flow by Kyle McDonald</p>
   
-  <label id="lkMaxLevelLabel">Max Level:</label><br />
-  <input type="range" id="lkMaxLevel" value="3" min="0" max="8" oninput="updateLabel('Max Level:', this, false);"><br />
+  <label id="learningTimeLabel">Learning Time:</label><br />
+  <input type="range" id="learningTime" value="30" min="0" max="30" oninput="updateLabel('Learning Time:', this, false);"><br />
+
+  <label id="thresholdValueLabel">Threshold Value:</label><br />
+  <input type="range" id="thresholdValue" value="10" min="0" max="255" oninput="updateLabel('Threshold Value:', this, false);"><br />
   
-  <label id="lkMaxFeaturesLabel">Max Features: </label><br />
-  <input type="range" id="lkMaxFeatures" value="200" min="1" max="1000" oninput="updateLabel('Max Features:', this, false);"><br />
-  
-  <label id="lkQualityLevelLabel">Quality Level: </label><br />
-  <input type="range" id="lkQualityLevel" value="0.01" min="0.001" max="0.02" step="0.001" oninput="updateLabel('Quality Level:', this, true);"><br />
-  
-  <label id="lkMinDistanceLabel">Min Distance: </label><br />
-  <input type="range" id="lkMinDistance" value="4" min="1" max="16" oninput="updateLabel('Min Distance:', this, false);"><br />
-  
-  <label id="lkWinSizeLabel">Window Size: </label><br />
-  <input type="range" id="lkWinSize" value="8" min="4" max="64" oninput="updateLabel('Window Size:', this, false);"><br />
-  
+  <input type="button" value="Reset Background" onclick="myBackground.reset();"><br />
 </body>
 </html>

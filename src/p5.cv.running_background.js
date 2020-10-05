@@ -20,7 +20,6 @@ class RunningBackground {
       this.needToReset = false;
       // frame.convertTo(this.accumulator, cv.CV_32F);
       frame.copyTo(this.accumulator);
-      console.log('converted');
     }
 
     this.accumulator.convertTo(this.background, cv.CV_8U);

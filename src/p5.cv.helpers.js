@@ -365,6 +365,10 @@ p5.cv.getRGBAMat = function (width, height) {
   return new cv.Mat(height, width, cv.CV_8UC4);
 };
 
+p5.cv.getGrayscaleMat = function (width, height) {
+  return new cv.Mat(height, width, cv.CV_8UC1);
+};
+
 p5.cv.matToImage = function (sourceMat, destinationImage) {
   // TODO: args safety check
   cv.imshow(destinationImage.canvas, sourceMat);
