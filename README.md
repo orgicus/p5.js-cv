@@ -3,9 +3,20 @@ p5.js port of Kyle McDonald's ofxCv library using OpenCV.js
 
 ### Examples
 
+- Threshold:![preview](examples/assets/images/example-threshold.gif)
+- Blur:![preview](examples/assets/images/example-blur-static.jpg)
+- Brightness Tracking:![preview](examples/assets/images/example-brightness-tracking.gif)
+- Background Subtraction:![preview](examples/assets/images/example-background-subtraction.gif)
+- Contour Quads:![preview](examples/assets/images/example-contours-quads-cat.jpg)
+- Optical Flow:![preview](examples/assets/images/example-optical-flow.gif)
+
+For more see the examples folder
+
 ### Installation
 
-The `lib` folder contains the minified `p5.cv.min.js` which can be included alongside `p5.min.js` in your project.
+The `lib` folder contains the minified [`p5.cv.min.js`](lib/p5.cv.min.js) which can be included alongside `p5.min.js` in your project.
+
+**Note** You will also need `opencv.js`. You can find version 4.4.0 in [lib/opencv.js](lib/opencv.js). You can find other versions on the official [OpenCV.org](https://opencv.org/) website.
 
 ### Minimal Threshold example:
 
