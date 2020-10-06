@@ -37,8 +37,8 @@ function onOpenCVComplete() {
   myContourFinder = new ContourFinder();
   myContourFinder.setMinArea(10);
   myContourFinder.setMaxArea(150);
-  // optional: // find black instead of white
-  myContourFinder.setInvert(true);
+  // optional: find black instead of white
+  // myContourFinder.setInvert(true);
 }
 
 function draw() {

@@ -1,0 +1,34 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Basic Threshold Example</title>
+  <meta name="description" content="OpenCV.js p5.js wrapper Blur filter demo">
+  <meta name="author" content="George Profenza">
+
+</head>
+
+<body>
+  <script language="javascript" type="text/javascript" src="../../lib/p5.js"></script>
+  
+  <script language="javascript" type="text/javascript" src="../../lib/opencv.js"></script>
+  
+  <script language="javascript" type="text/javascript" src="../../lib/p5.cv.js"></script> 
+  
+  <script language="javascript" type="text/javascript" src="sketch.js"></script> 
+  
+  <script language="javascript" type="text/javascript">
+    function updateLabel(prefix, input, isFloat){
+      console.log(prefix, isFloat);
+      document.querySelector("#" + input.id + "Label").innerText = prefix + " " + (isFloat ? nfc(input.value, 4) : int(input.value));
+      radius = int(input.value);
+    }
+  </script> 
+
+  <p>OpenCV 4 in p5.js: Threshold example
+    Based on ofxCv's threshold example by Kyle McDonald
+  </p>
+</body>
+</html>

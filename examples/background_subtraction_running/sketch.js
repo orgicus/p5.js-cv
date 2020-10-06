@@ -7,7 +7,6 @@
 
 // p5.js Video
 let myVideo;
-let isVideoLoaded;
 // OpenCV capture helper
 let myCVCapture;
 // (RGBA) Mat to store the latest color camera frame
@@ -32,7 +31,6 @@ function setup() {
 function myVideoLoaded() {
   myVideo.loop();
   myVideo.volume(0);
-  isVideoLoaded = true;
 }
 
 function setupCV() {
@@ -69,6 +67,5 @@ function draw() {
     myBackground.update(myMatGrayscale, myThresholdedMat);
     // display Mat
     p5.cv.drawMat(myMat, 0, 0);
-    console.log(myMatGrayscale);
   }
 }

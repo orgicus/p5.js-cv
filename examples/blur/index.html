@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Brightness Tracking Example</title>
+  <title>Blur Filter Example</title>
   <meta name="description" content="OpenCV.js p5.js wrapper Blur filter demo">
   <meta name="author" content="George Profenza">
 
@@ -27,7 +27,9 @@
     }
   </script> 
 
-  <p>OpenCV 4 in p5.js: Blur example</p>
+  <p>OpenCV 4 in p5.js: Blur example<br />
+     Based on ofxCv's blur example by Kyle McDonald
+  </p>
   <label id="blurRadiusLabel">Blur radius:</label><br />
   <input type="range" id="blurRadius" value="3" min="0" max="18" oninput="updateLabel('Blur radius:', this, false);"><br />
   

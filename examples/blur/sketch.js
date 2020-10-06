@@ -1,5 +1,7 @@
 /**
- * OpenCV 4 in p5.js: Blur example
+ * Based on ofxCv's blur example by Kyle McDonald
+ * 
+ * Demonstrates box and Gaussian Blur
  */
 
 // p5.js Video capture

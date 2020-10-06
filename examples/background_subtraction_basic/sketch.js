@@ -60,8 +60,6 @@ function draw() {
     // Print out the total amount of movement
     console.log(presenceSum / (differenceMat.total() * 255 * 3));
     // console.log('test');
-  } else {
-    // image(myCapture, 0, 0);
   }
 }
 

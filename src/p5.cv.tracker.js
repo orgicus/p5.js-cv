@@ -107,8 +107,8 @@ class Tracker {
     return this.curLabel++;
   }
 
-  setPersistance(persistance) {
-    this.persistance = persistance;
+  setPersistence(persistence) {
+    this.persistance = persistence;
   }
 
   setMaximumDistance(maximumDistance) {
